@@ -1,18 +1,70 @@
- <!DOCTYPE html>
-
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>my-first-website</title>
-  <LINK href="styles.css" rel="stylesheet" type="text/css">
-</head>
-
-<body>
-测试文字内容
-<img src="https://octodex.github.com/images/daftpunktocat-thomas.gif" id="octocat" alt="octocat-gif" />
-
-<!-- Change this code here by copy and pasting your template on line 15 -->
-<p>Welcome to your first GitHub Pages website!</p>
-
+<html><head>
+<title>眼睛跟随</title>
+<link rel="stylesheet" type="text/css" href="./style.css">
+<script id="jquery_183" type="text/javascript" class="library" src="./jquery-1.8.3.min.js"></script></head>
+<body class="keBody">
+<h1 class="keTitle">Oh!I see you!</h1>
+<div class="kePublic">
+<div class="eye_wrapper" id="eyeballs">
+<img alt="Ball" class="eye-left" id="eye_left" src="./img/ball.png">
+<img alt="Ball" class="eye-right" id="eye_right" src="./img/ball.png">
+<img alt="Head" class="head" src="./img/head.png">
+</div>
+</div>
+<input type="radio" id="dy" name="rdd" checked="checked">
+<span style="color: #FFF">可以对眼　　</span>
+<input type="radio" id="bdy" name="rdd">
+<span style="color: #FFF">不能对眼</span>
+<script>
+dd = 0;
+$("[name='rdd']").on("change",
+    function (e) {
+        ///console.log($(e.target).val());
+		dd = Math.abs(dd-1);
+    }
+);
+var getAngle = function(Xc, Yc, Xa, Ya, Xb, Yb) {
+	var v1x = Xb - Xc;
+	var v1y = Yb - Yc;
+	var v2x = Xa - Xc;
+	var v2y = Ya - Yc;
+	return 180 * (Math.atan2(v1x, v1y) - Math.atan2(v2x, v2y)) / Math.PI
+};
+var left_center_offset = {
+	left: 68,
+	top: 64
+},
+right_center_offset = {
+	left: 118,
+	top: 64
+},
+radius = 8;
+var setEyeOffset = function(event) {
+	var offset = $(".eye_wrapper").offset();
+	var x1 = offset.left + left_center_offset.left;
+	var y1 = offset.top + left_center_offset.top;
+	var x2 = offset.left + right_center_offset.left;
+	var y2 = offset.top + right_center_offset.top;
+	var n1 = event.clientX - x1;
+	var m1 = -(event.clientY - y1);
+	var k1 = Math.atan2(m1, n1);
+	var n2 = event.clientX - x2;
+	var m2 = -(event.clientY - y2);
+	var k2 = Math.atan2(m2, n2);
+	var x11 = (Math.cos(k1) * radius * Math.sqrt(1-(1500 * dd /(m1*m1+n1*n1))) + x1).toFixed(0);
+	var y11 = (( - Math.sin(k1) * radius * 1.5 * Math.sqrt(1-(2000 * dd/(m1*m1+n1*n1)))) + y1).toFixed(0);
+	$(".eye-left").offset({
+		left: x11,
+		top: y11
+	});
+	var x22 = (Math.cos(k2) * radius * Math.sqrt(1-(1500* dd /(m2*m2+n2*n2))) + x2).toFixed(0);
+	var y22 = (( - Math.sin(k2) * radius * 1.5 * Math.sqrt(1-(2000* dd/(m2*m2+n2*n2)))) + y2).toFixed(0);
+	$(".eye-right").offset({
+		left: x22,
+		top: y22
+	})
+};
+$(window).mousemove(setEyeOffset);
+</script>
 </body>
 </html>
